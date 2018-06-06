@@ -1,0 +1,29 @@
+{
+  "name": "gulp-images-resizer",
+  "displayName": "Gulp images resizer",
+  "version": "0.0.1",
+  "description": "Gulp images resizer",
+  "url": "https://github.com/odrick/gulp-images-resizer",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "gulp",
+    "gulpjs",
+    "gulpplugin",
+    "image",
+    "images",
+    "resize",
+    "resizer"
+  ],
+  "author": "Alexander Norinchak",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/odrick/gulp-images-resizer"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "jimp": "^0.2.28",
+    "through2": "^2.0.3",
+    "tinify": "^1.5.0"
+  }
+}
