@@ -6,20 +6,7 @@
    
 $ npm install gulp-images-resizer
 
-# Basic usage
-```js
-let resizer = require('gulp-images-resizer');
-
-gulp.task('resize', function() {
-    return gulp.src('src/**/*.*')
-		.pipe(resizer())
-		.pipe(gulp.dest('dest/'));
-});
-```
-
-# Advanced usage
-
-Use resizer options object
+# Usage
 
 ```js
 let resizer = require('gulp-images-resizer');

@@ -46,7 +46,6 @@ function tinifyImage(buffer, options, callback) {
 const SUPPORTED_EXT = ["png", "jpg", "jpeg", "gif", "bpm"];
 
 module.exports = function(options = {}) {
-    let files = [];
     let firstFile = null;
 
     options.format = options.format || "*";
