@@ -1,7 +1,7 @@
 {
   "name": "gulp-images-resizer",
   "displayName": "Gulp images resizer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Gulp images resizer",
   "url": "https://github.com/odrick/gulp-images-resizer",
   "main": "index.js",
