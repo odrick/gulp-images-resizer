@@ -12,6 +12,12 @@ function getNameFromPath(path) {
 	return fixPath(path).split("/").pop().split(".").shift();
 }
 
+function getPathFromPath(path) {
+	var arr = fixPath(path).split("/");
+	arr.pop();
+	return arr.join("/");
+}
+
 function getExtFromPath(path) {
     return path.split(".").pop().toLowerCase();
 }
@@ -107,8 +113,8 @@ module.exports = function(options = {}) {
             if((typeof height === "string") && height.substr(height.length-1) === "%") {
                 height = Math.floor(image.bitmap.height * (parseInt(height) / 100));
             }
-            
-            image.resize(width, height).quality(options.quality);
+			
+			image.resize(width, height).quality(options.quality);
             
             image.getBuffer(format, (err, buffer) => {
                 if (err) {
@@ -119,7 +125,8 @@ module.exports = function(options = {}) {
 
                 tinifyImage(buffer, options, (resBuffer) => {
                     let nf = firstFile.clone({contents: false});
-                    nf.path = path.join(firstFile.base, getNameFromPath(file.relative) + "." + ext);
+					
+                    nf.path = path.join(file.base, getPathFromPath(file.relative) + "/" + getNameFromPath(file.relative) + "." + ext);
                     nf.contents = resBuffer;
                     this.push(nf);
 
