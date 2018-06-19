@@ -13,7 +13,7 @@ let resizer = require('gulp-images-resizer');
 
 gulp.task('resize', function() {
     return gulp.src('src/**/*.*')
-		.pipe(resizer({
+	.pipe(resizer({
             format: "png",
             width: "50%"
         }))
