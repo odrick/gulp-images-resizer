@@ -1,6 +1,7 @@
 # gulp-images-resizer
 
-> Images resizer for gulp
+[![Stats](https://nodei.co/npm/gulp-images-resizer.png?downloads=true&stars=true)](https://www.npmjs.com/package/gulp-images-resizer) \
+Images resizer for gulp
 
 # Install
    
