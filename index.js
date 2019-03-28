@@ -9,11 +9,10 @@ function fixPath(path) {
 }
 
 function getNameFromPath(path) {
-  return fixPath(path)
-    .split("/")
-    .pop()
-    .split(".")
-    .shift();
+  let filename = fixPath(path).split("/").pop();
+  let index = filename.lastIndexOf('.');
+
+  return filename.substring(0, index);
 }
 
 function getPathFromPath(path) {
@@ -23,10 +22,8 @@ function getPathFromPath(path) {
 }
 
 function getExtFromPath(path) {
-  return path
-    .split(".")
-    .pop()
-    .toLowerCase();
+  let index = path.lastIndexOf('.');
+  return path.substring(index + 1);
 }
 
 function getErrorDescription(txt) {
