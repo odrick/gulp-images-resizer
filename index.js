@@ -57,7 +57,7 @@ function tinifyImage(buffer, options, callback) {
   });
 }
 
-const SUPPORTED_EXT = ["png", "jpg", "jpeg", "gif", "bpm"];
+const SUPPORTED_EXT = ["png", "jpg", "jpeg", "gif", "bmp"];
 
 module.exports = function(options = {}) {
   let firstFile = null;
