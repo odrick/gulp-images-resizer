@@ -127,14 +127,14 @@ module.exports = function(options = {}) {
           typeof width === "string" &&
           width.substr(width.length - 1) === "%"
         ) {
-          width = Math.floor(image.bitmap.width * (parseInt(width) / 100));
+          width = Math.round(image.bitmap.width * (parseFloat(width) / 100))
         }
 
         if (
           typeof height === "string" &&
           height.substr(height.length - 1) === "%"
         ) {
-          height = Math.floor(image.bitmap.height * (parseInt(height) / 100));
+          height = Math.round(image.bitmap.height * (parseFloat(height) / 100))
         }
       }
 
