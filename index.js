@@ -123,11 +123,16 @@ module.exports = function(options = {}) {
           width = Jimp.AUTO;
         }
       } else {
+        var
+          width_aspect = false,
+          height_aspect = false
         if (
           typeof width === "string" &&
           width.substr(width.length - 1) === "%"
         ) {
           width = Math.round(image.bitmap.width * (parseFloat(width) / 100))
+        } else {
+          width_aspect = image.bitmap.width / width;
         }
 
         if (
@@ -135,10 +140,22 @@ module.exports = function(options = {}) {
           height.substr(height.length - 1) === "%"
         ) {
           height = Math.round(image.bitmap.height * (parseFloat(height) / 100))
+        } else {
+          height_aspect = image.bitmap.height / height;
         }
       }
 
-      image.resize(width, height).quality(options.quality);
+      if (height_aspect && width_aspect && height_aspect != width_aspect) {
+        if (height_aspect < width_aspect) {
+          var adjust = image.bitmap.width / height_aspect;
+          image.resize(adjust, height).crop( (adjust - width) / 2 , 0, width, height).quality(options.quality);
+        } else {
+          var adjust = image.bitmap.height / width_aspect;
+          image.resize(width, adjust).crop(0, (adjust - height) / 2 , width, height).quality(options.quality);
+        }
+      } else {
+        image.resize(width, height).quality(options.quality);
+      }
 
       image.getBuffer(format, (err, buffer) => {
         if (err) {
