@@ -115,6 +115,9 @@ module.exports = function(options = {}) {
       let width = options.width;
       let height = options.height;
 
+      let width_aspect = false;
+      let height_aspect = false;
+
       if (options.noCrop && image.bitmap.width !== image.bitmap.height) {
         let isWidthMax = image.bitmap.width > image.bitmap.height;
         if (isWidthMax) {
@@ -123,15 +126,16 @@ module.exports = function(options = {}) {
           width = Jimp.AUTO;
         }
       } else {
-        var
-          width_aspect = false,
-          height_aspect = false
+
         if (
           typeof width === "string" &&
           width.substr(width.length - 1) === "%"
         ) {
           width = Math.round(image.bitmap.width * (parseFloat(width) / 100))
-        } else {
+        } 
+        
+        // If width is set get the aspect (Jimp auto returns -1).
+        if ( width >= 1 ) {
           width_aspect = image.bitmap.width / width;
         }
 
@@ -140,21 +144,46 @@ module.exports = function(options = {}) {
           height.substr(height.length - 1) === "%"
         ) {
           height = Math.round(image.bitmap.height * (parseFloat(height) / 100))
-        } else {
+        }
+        
+        // If height is set get the aspect (Jimp auto returns -1).
+        if ( height >= 1 ) {
           height_aspect = image.bitmap.height / height;
         }
+
       }
 
-      if (height_aspect && width_aspect && height_aspect != width_aspect) {
+      // If image would need cropping to avoid stretching.
+      if ( height_aspect && width_aspect && height_aspect != width_aspect ) {
+
+        // If height is more we'll trim the width
         if (height_aspect < width_aspect) {
-          var adjust = image.bitmap.width / height_aspect;
-          image.resize(adjust, height).crop( (adjust - width) / 2 , 0, width, height).quality(options.quality);
+
+          // Position it in the centre to crop the width.
+          var adjust = ( image.bitmap.width / height_aspect ) - width;
+
+          image
+            .resize(adjust, height)
+            .crop( adjust / 2 , 0, width, height)
+            .quality(options.quality);
+
         } else {
-          var adjust = image.bitmap.height / width_aspect;
-          image.resize(width, adjust).crop(0, (adjust - height) / 2 , width, height).quality(options.quality);
+          // Else we'll trim the height
+
+          // Position it in the centre to crop the height.
+          var adjust = ( image.bitmap.height / width_aspect ) - height;
+
+          image
+            .resize(width, adjust)
+            .crop(0, adjust / 2 , width, height)
+            .quality(options.quality);
+
         }
+
       } else {
+        // Crop not needed as it would not be stretched.
         image.resize(width, height).quality(options.quality);
+
       }
 
       image.getBuffer(format, (err, buffer) => {
