@@ -159,23 +159,25 @@ module.exports = function(options = {}) {
         // If height is more we'll trim the width
         if (height_aspect < width_aspect) {
 
-          // Position it in the centre to crop the width.
-          var adjust = ( image.bitmap.width / height_aspect ) - width;
+          // Resize the width based on the height_aspect.
+          var adjust = image.bitmap.width / height_aspect;
 
           image
             .resize(adjust, height)
-            .crop( adjust / 2 , 0, width, height)
+            // Centre the image so we can crop to required height.
+            .crop( ( adjust - width ) / 2 , 0, width, height)
             .quality(options.quality);
 
         } else {
           // Else we'll trim the height
 
-          // Position it in the centre to crop the height.
-          var adjust = ( image.bitmap.height / width_aspect ) - height;
+          // Resize the height based on the width_aspect.
+          var adjust = image.bitmap.height / width_aspect;
 
           image
             .resize(width, adjust)
-            .crop(0, adjust / 2 , width, height)
+            // Centre the image so we can crop to required width.
+            .crop(0, ( adjust - height ) / 2 , width, height)
             .quality(options.quality);
 
         }
