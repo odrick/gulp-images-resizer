@@ -115,6 +115,9 @@ module.exports = function(options = {}) {
       let width = options.width;
       let height = options.height;
 
+      let width_aspect = false;
+      let height_aspect = false;
+
       if (options.noCrop && image.bitmap.width !== image.bitmap.height) {
         let isWidthMax = image.bitmap.width > image.bitmap.height;
         if (isWidthMax) {
@@ -123,11 +126,17 @@ module.exports = function(options = {}) {
           width = Jimp.AUTO;
         }
       } else {
+
         if (
           typeof width === "string" &&
           width.substr(width.length - 1) === "%"
         ) {
           width = Math.round(image.bitmap.width * (parseFloat(width) / 100))
+        } 
+        
+        // If width is set get the aspect (Jimp auto returns -1).
+        if ( width >= 1 ) {
+          width_aspect = image.bitmap.width / width;
         }
 
         if (
@@ -136,9 +145,48 @@ module.exports = function(options = {}) {
         ) {
           height = Math.round(image.bitmap.height * (parseFloat(height) / 100))
         }
+        
+        // If height is set get the aspect (Jimp auto returns -1).
+        if ( height >= 1 ) {
+          height_aspect = image.bitmap.height / height;
+        }
+
       }
 
-      image.resize(width, height).quality(options.quality);
+      // If image would need cropping to avoid stretching.
+      if ( height_aspect && width_aspect && height_aspect != width_aspect ) {
+
+        // If height is more we'll trim the width
+        if (height_aspect < width_aspect) {
+
+          // Resize the width based on the height_aspect.
+          var adjust = image.bitmap.width / height_aspect;
+
+          image
+            .resize(adjust, height)
+            // Centre the image so we can crop to required height.
+            .crop( ( adjust - width ) / 2 , 0, width, height)
+            .quality(options.quality);
+
+        } else {
+          // Else we'll trim the height
+
+          // Resize the height based on the width_aspect.
+          var adjust = image.bitmap.height / width_aspect;
+
+          image
+            .resize(width, adjust)
+            // Centre the image so we can crop to required width.
+            .crop(0, ( adjust - height ) / 2 , width, height)
+            .quality(options.quality);
+
+        }
+
+      } else {
+        // Crop not needed as it would not be stretched.
+        image.resize(width, height).quality(options.quality);
+
+      }
 
       image.getBuffer(format, (err, buffer) => {
         if (err) {
