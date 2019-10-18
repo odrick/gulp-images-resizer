@@ -76,6 +76,10 @@ module.exports = function(options = {}) {
   options.tinify = options.tinify || false;
   options.tinifyKey = options.tinifyKey || "";
 
+  if (options.verbose) {
+    console.log("gulp-images-resizer starting with options ", JSON.stringify(options));
+  }
+
   function bufferContents(file, enc, cb) {
     if (file.isNull()) {
       cb();
@@ -96,6 +100,10 @@ module.exports = function(options = {}) {
     }
 
     Jimp.read(file.contents, (err, image) => {
+      if (options.verbose) {
+        console.log("Processing image", file.relative);
+      }
+
       if (err) {
         console.error(getErrorDescription("Error reading " + file.relative));
         cb();
