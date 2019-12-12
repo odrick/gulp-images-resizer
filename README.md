@@ -24,6 +24,7 @@ gulp.task('resize', function() {
 
 # Available options
 
+* `verbose` - log file processing options, each image as processed. Default: **false**
 * `format` - fromat of output files (png, jpg, gif, bmp or *). Default: *
 * `width` - width of output images (fixed, percentage or -1 for auto). Default: **-1**
 * `height` - height of output images (fixed, percentage or -1 for auto). Default: **-1**
